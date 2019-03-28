@@ -1,0 +1,11 @@
+package Service;
+
+public class Course {
+
+	private int location;
+	private String name;
+	private Teacher teacher;
+	private String endHour;
+	private String startHour;
+	
+}

@@ -1,0 +1,100 @@
+package Data;
+
+import java.sql.SQLException;
+
+import Data.Validation;
+
+public class User {
+
+	
+	protected Validation v= new Validation();
+	private int id;
+	private String email;
+	private String password;
+	private String cnp;
+	private String address;
+	private String name;
+	
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		try {
+			if(v.verifEmail(email))
+				this.email = email;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		try {
+			if(v.verifNume(password))
+			this.password = password;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		try {
+			if(v.verifGroup(id))
+			this.id = id;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	public String getCnp() {
+		return cnp;
+	}
+
+	public void setCnp(String cnp) {
+		try {
+			if(v.verifCnp(cnp))
+				this.cnp = cnp;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	public String getAddress() {
+		return address;
+	}
+
+	public void setAddress(String address) {
+		try {
+			if(v.verifOras(address))
+			this.address = address;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		try {
+			if(v.verifNume(name))
+			this.name = name;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+}

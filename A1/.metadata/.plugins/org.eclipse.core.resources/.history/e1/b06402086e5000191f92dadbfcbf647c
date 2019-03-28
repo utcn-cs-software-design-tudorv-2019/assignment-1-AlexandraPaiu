@@ -1,0 +1,12 @@
+package Data;
+
+public class Teacher extends User {
+
+	public Teacher(int id, String name, String address, String cnp) {
+		this.setId(id);
+		this.setAddress(address);
+		this.setCnp(cnp);
+		this.setName(name);
+	}
+	
+}

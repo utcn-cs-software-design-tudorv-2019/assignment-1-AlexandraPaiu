@@ -1,0 +1,97 @@
+package Business;
+
+import java.awt.HeadlessException;
+
+import DBA.Conexiune;
+import Data.Student;
+import Data.StudentRepository;
+import Data.Teacher;
+import Data.TeacherRepository;
+import javafx.scene.Scene;
+import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
+
+public class TeacherBll {
+	
+	Stage scena;
+	Teacher t;
+	
+	public TeacherBll() {
+		
+	}
+	
+	public TeacherBll(String name, String email,String password,String cnp,String address) {
+		this.t = new Teacher(name,email,password,cnp, address);
+	}
+
+	public Teacher findByMail(String mail) {
+		Conexiune co = new Conexiune();
+		Teacher s = new Teacher();
+		java.sql.Connection conex = co.getConex();
+		try {
+			TeacherRepository c = new TeacherRepository(conex);
+			s = c.findbyMail(mail);
+			this.showAt(scena, "SEarch cu succes TeacherBll");
+		} catch (HeadlessException e) {
+			this.showAt(scena, "Eroare la introducere");
+			e.printStackTrace();
+		}
+		return s;
+	}
+	
+	public void updates(Teacher nw,  String name, String address, String cnp) {
+		Conexiune co = new Conexiune();
+		java.sql.Connection conex = co.getConex();
+		try {
+			TeacherRepository c = new TeacherRepository(conex);
+			t.setAddress(address);
+			t.setCnp(cnp);
+			t.setName(name);
+			c.updates(nw,name,address,cnp);
+			this.showAt(scena, "Update cu succes TeacherBll");
+		} catch (HeadlessException e) {
+			this.showAt(scena, "Eroare la introducere");
+			e.printStackTrace();
+		}
+	}
+	
+	public void adauga(){
+		Conexiune co = new Conexiune();
+		java.sql.Connection conex = co.getConex();
+		try {
+			TeacherRepository c = new TeacherRepository(conex);
+			c.insert(t);
+			this.showAt(scena, "Adaugare cu succes TeacherBll");
+		} catch (HeadlessException e) {
+			this.showAt(scena, "Eroare la introducere");
+			e.printStackTrace();
+		}
+		}
+	
+	public void sterge() {System.out.println(t.getEmail());
+		Conexiune co = new Conexiune();
+		java.sql.Connection conex = co.getConex();
+		try {
+			TeacherRepository c = new TeacherRepository(conex);
+			
+			c.delete(t.getEmail());
+			this.showAt(scena, "Stergere cu succes TeacherBll");
+		} catch (HeadlessException e) {
+			this.showAt(scena, "Eroare la introducere");
+			e.printStackTrace();
+		}
+	}
+	
+	private void showAt(final Stage primaryStage, String text) {
+	    	 final Stage dialog = new Stage();
+             dialog.initModality(Modality.APPLICATION_MODAL);
+             dialog.initOwner(primaryStage);
+             VBox dialogVbox = new VBox(20);
+             dialogVbox.getChildren().add(new Text(text.toString()));
+             Scene dialogScene = new Scene(dialogVbox, 220, 50);
+             dialog.setScene(dialogScene);
+             dialog.show();
+	    }
+}

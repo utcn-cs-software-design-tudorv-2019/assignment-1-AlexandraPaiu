@@ -1,0 +1,127 @@
+package Data;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import DBA.Conexiune;
+
+public class TeacherRepository {
+
+	private static Connection con;
+	private Statement sts;
+	protected static final Logger LOGGER = Logger.getLogger(TeacherRepository.class.getName());
+	private static final String insertStatementString = "INSERT INTO teacher (email,password,address,name,cnp)"
+			+ " VALUES (?,?,?,?,?)";
+	private final static String deleteStatementString ="DELETE FROM teacher where id = ?";
+	
+	public TeacherRepository(Connection con){
+		TeacherRepository.con = con;
+		try{sts = this.con.createStatement();}
+		catch(Exception e){
+			e.printStackTrace();
+		}
+	}
+	
+	public Teacher findbyMail(String email) {
+		Teacher s= new Teacher();
+		PreparedStatement findStatement = null;
+		try {
+			String y = "SELECT * FROM teacher where email = '" + email + "' ;";
+			 ResultSet rs = sts.executeQuery(y);
+			/*findStatement = con.executeQuery(findStatementString, Statement.RETURN_GENERATED_KEYS);
+			findStatement.setString(1, email);
+			findStatement.executeUpdate();
+			
+			ResultSet rs = findStatement.getGeneratedKeys();*/
+			
+			if (rs.next()) {
+				
+				s = new Teacher(rs.getString("name"),rs.getString("email"),rs.getString("password"),rs.getString("cnp"),rs.getString("address"));
+				s.setId(rs.getInt("idTeacher"));
+				System.out.println("daaaaaaaaaaaaaaaa");
+			}
+		} catch (SQLException e) {
+			LOGGER.log(Level.WARNING, "TeacherRepository:findbyMail " + e.getMessage());
+		} finally {
+			Conexiune.close(findStatement);
+		}
+		return s;
+	}
+	
+	public void insert(Teacher teacher) 
+	{
+		PreparedStatement insertStatement = null;
+		int insertedId = -1;
+		try {
+			/*
+			insertStatement = con.prepareStatement(insertStatementString, Statement.RETURN_GENERATED_KEYS);
+			insertStatement.setString(1, teacher.getEmail());
+			insertStatement.setString(2, teacher.getPassword());
+			insertStatement.setString(3, teacher.getAddress());
+			insertStatement.setString(4, teacher.getName());
+			insertStatement.setString(5, teacher.getCnp());
+			insertStatement.executeUpdate();
+
+			ResultSet rs = insertStatement.getGeneratedKeys();
+			*/
+			String y = "INSERT INTO teacher VALUES ('" + teacher.getEmail() + "' , '" + teacher.getPassword() +"' , '"+
+								teacher.getAddress()+ "' , '"+ teacher.getName()+"' , '"+teacher.getCnp()+"' );";
+			 int rs = sts.executeUpdate(y);
+			
+			
+		} catch (SQLException e) {
+			LOGGER.log(Level.WARNING, "TeacherRepository:insert " + e.getMessage());
+		} finally {
+			Conexiune.close(insertStatement);
+		//	Conexiune.close(con);
+		}
+	}
+	
+	public void show() throws SQLException{
+		/*JFrame frm  = new JFrame();
+		frm.setSize(800,500);
+		JTable Tabel=new JTable();
+		JScrollPane TextAreaScroll = new JScrollPane();
+		JPanel o = new JPanel();
+		o.setLayout(new	BoxLayout(o , BoxLayout.Y_AXIS));
+		o.add(TextAreaScroll);
+		TextAreaScroll.setViewportView(Tabel);
+	    Tabel.setEnabled(true);
+	    Tabel.setVisible(true);
+	    ResultSet rs = sts.executeQuery("SELECT * FROM client;");
+	    ArrayList<Client> x = new ArrayList<Client>(); 
+	    while(rs.next()){
+	    	Client y = new Client(rs.getString("Nume"), rs.getString("Telefon"), rs.getString("Email"),rs.getString("Oras"), rs.getString("Strada"));
+	    	y.setId(rs.getInt("idClient"));
+	    	x.add(y);
+	    }
+	    GenerateRef gr = new GenerateRef();
+	    Tabel.setModel(gr.afis(x));
+       // Tabel.setModel(DbUtils.resultSetToTableModel(rs));
+			o.setVisible(true);
+       frm.add(o);
+       frm.setVisible(true);*/
+	}
+
+	public void delete(int id) 
+	{
+		PreparedStatement deleteStatement = null;
+		int insertedId = -1;
+		try {
+			
+			deleteStatement = con.prepareStatement(deleteStatementString, Statement.RETURN_GENERATED_KEYS);
+			deleteStatement.setInt(1, id);
+			deleteStatement.executeUpdate();
+		} catch (SQLException e) {
+			LOGGER.log(Level.WARNING, "TeacherRepository:delete " + e.getMessage());
+		} finally {
+			Conexiune.close(deleteStatement);
+		}
+	}
+	
+}

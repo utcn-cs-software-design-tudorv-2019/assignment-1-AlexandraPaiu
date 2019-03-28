@@ -1,0 +1,101 @@
+package Data;
+
+import java.sql.Statement;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import DBA.Conexiune;
+
+public class StudentRepository {
+
+		private static Connection con;
+		private Statement sts;
+		protected static final Logger LOGGER = Logger.getLogger(StudentRepository.class.getName());
+		private static final String insertStatementString = "INSERT INTO student (email,telefon,nume,oras,strada)"
+				+ " VALUES (?,?,?,?,?)";
+		private final static String deleteStatementString ="DELETE FROM student where id = ?";
+		
+		public StudentRepository(Connection con){
+			StudentRepository.con = con;
+			try{sts = this.con.createStatement();}
+			catch(Exception e){
+				e.printStackTrace();
+			}
+		}
+		
+		public void insert(Student student) 
+		{
+			PreparedStatement insertStatement = null;
+			int insertedId = -1;
+			try {
+				
+				insertStatement = con.prepareStatement(insertStatementString, Statement.RETURN_GENERATED_KEYS);
+				insertStatement.setInt(1, student.getId());
+				insertStatement.setString(2, student.getCnp());
+				insertStatement.setString(3, student.getName());
+				insertStatement.setString(4, student.getAddress());
+				insertStatement.setInt(5, student.getGroup());
+				insertStatement.executeUpdate();
+
+				ResultSet rs = insertStatement.getGeneratedKeys();
+				if (rs.next()) {
+					insertedId = rs.getInt(1);
+				}
+			} catch (SQLException e) {
+				LOGGER.log(Level.WARNING, "StudentRepository:insert " + e.getMessage());
+			} finally {
+				Conexiune.close(insertStatement);
+			//	Conexiune.close(con);
+			}
+		}
+		
+		public void show() throws SQLException{
+		/*	JFrame frm  = new JFrame();
+			frm.setSize(800,500);
+			JTable Tabel=new JTable();
+			JScrollPane TextAreaScroll = new JScrollPane();
+			JPanel o = new JPanel();
+			o.setLayout(new	BoxLayout(o , BoxLayout.Y_AXIS));
+			o.add(TextAreaScroll);
+			TextAreaScroll.setViewportView(Tabel);
+		    Tabel.setEnabled(true);
+		    Tabel.setVisible(true);
+		    ResultSet rs = sts.executeQuery("SELECT * FROM client;");
+		    ArrayList<Client> x = new ArrayList<Client>(); 
+		    while(rs.next()){
+		    	Client y = new Client(rs.getString("Nume"), rs.getString("Telefon"), rs.getString("Email"),rs.getString("Oras"), rs.getString("Strada"));
+		    	y.setId(rs.getInt("idClient"));
+		    	x.add(y);
+		    }
+		    GenerateRef gr = new GenerateRef();
+		    Tabel.setModel(gr.afis(x));
+	       // Tabel.setModel(DbUtils.resultSetToTableModel(rs));
+				o.setVisible(true);
+	       frm.add(o);
+	       frm.setVisible(true);*/
+		}
+
+		public void delete(int id) 
+		{
+			PreparedStatement deleteStatement = null;
+			int insertedId = -1;
+			try {
+				
+				deleteStatement = con.prepareStatement(deleteStatementString, Statement.RETURN_GENERATED_KEYS);
+				deleteStatement.setInt(1, id);
+				deleteStatement.executeUpdate();
+			} catch (SQLException e) {
+				LOGGER.log(Level.WARNING, "StudentRepository:delete " + e.getMessage());
+			} finally {
+				Conexiune.close(deleteStatement);
+			}
+		}
+		
+	
+
+	
+}

@@ -1,0 +1,98 @@
+package Data;
+
+import java.sql.Statement;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import DBA.Conexiune;
+
+public class StudentRepository {
+
+		private static Connection con;
+		private Statement sts;
+		protected static final Logger LOGGER = Logger.getLogger(StudentRepository.class.getName());
+		private static final String insertStatementString = "INSERT INTO student (group,email,password,address,cnp,name)"
+				+ " VALUES (?,?,?,?,?,?)";
+		private final static String deleteStatementString ="DELETE FROM student where id = ?";
+		private final static String findStatementString ="SELECT FROM student where email = ?";
+		
+		
+		public StudentRepository(Connection con){
+			StudentRepository.con = con;
+			try{sts = this.con.createStatement();}
+			catch(Exception e){
+				e.printStackTrace();
+			}
+		}
+		
+		public Student findbyMail(String email) {
+			Student s= new Student();
+			PreparedStatement findStatement = null;
+			try {
+				findStatement = con.prepareStatement(findStatementString, Statement.RETURN_GENERATED_KEYS);
+				findStatement.setString(1, email);
+				findStatement.executeUpdate();
+				ResultSet rs = findStatement.getGeneratedKeys();
+				if (rs.next()) {
+					s = new Student(rs.getString("name"),rs.getString("email"),rs.getString("password"),rs.getString("cnp"),rs.getString("address"), rs.getInt("group"));
+					
+				}
+			} catch (SQLException e) {
+				LOGGER.log(Level.WARNING, "StudentRepository:findbyMail " + e.getMessage());
+			} finally {
+				Conexiune.close(findStatement);
+			}
+			return s;
+		}
+		
+		public void insert(Student student) 
+		{
+			PreparedStatement insertStatement = null;
+			try {
+				
+				insertStatement = con.prepareStatement(insertStatementString, Statement.RETURN_GENERATED_KEYS);
+				insertStatement.setInt(1, student.getGroup());
+				insertStatement.setString(2, student.getEmail());
+				insertStatement.setString(3, student.getPassword());
+				insertStatement.setString(4, student.getAddress());
+				insertStatement.setString(5, student.getCnp());
+				insertStatement.setString(6, student.getName());
+				insertStatement.executeUpdate();
+
+	
+			} catch (SQLException e) {
+				LOGGER.log(Level.WARNING, "StudentRepository:insert " + e.getMessage());
+			} finally {
+				Conexiune.close(insertStatement);
+			}
+		}
+		
+		public void show() throws SQLException{
+		}
+
+		
+		
+		public void delete(int id) 
+		{
+			PreparedStatement deleteStatement = null;
+			int insertedId = -1;
+			try {
+				
+				deleteStatement = con.prepareStatement(deleteStatementString, Statement.RETURN_GENERATED_KEYS);
+				deleteStatement.setInt(1, id);
+				deleteStatement.executeUpdate();
+			} catch (SQLException e) {
+				LOGGER.log(Level.WARNING, "StudentRepository:delete " + e.getMessage());
+			} finally {
+				Conexiune.close(deleteStatement);
+			}
+		}
+		
+	
+
+	
+}

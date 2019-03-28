@@ -1,0 +1,39 @@
+package Data;
+
+import java.sql.SQLException;
+
+public class Validation {
+
+	public boolean verifNume(String nume) throws SQLException{
+        if (nume.equals(""))
+            return false;
+        else return true;
+    }
+
+ 
+	public boolean verifGrade(double grade) throws SQLException{
+        if (grade>0)
+            return true;
+        else return false;
+    }
+
+	public boolean verifGroup(int group) throws SQLException{
+        if(group>0)
+            return true;
+        else return false;}
+    
+	public boolean verifNume(String nume) throws SQLException{
+		if (nume.equals(""))
+			return false;
+		else return true;
+	}
+	
+	public boolean verifOras(String oras)throws SQLException{
+		if (oras.equals(""))
+			return false;
+		else return true;
+	}
+	
+	
+	
+}

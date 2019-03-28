@@ -1,0 +1,36 @@
+package Service;
+
+public class Enrollment {
+
+	private String examen;
+	private float grade;
+	private Teacher teacher;
+	private Course course;
+	
+	public String getExamen() {
+		return examen;
+	}
+	public void setExamen(String examen) {
+		this.examen = examen;
+	}
+	public float getGrade() {
+		return grade;
+	}
+	public void setGrade(float grade) {
+		this.grade = grade;
+	}
+	public Teacher getTeacher() {
+		return teacher;
+	}
+	public void setTeacher(Teacher teacher) {
+		this.teacher = teacher;
+	}
+	public Course getCourse() {
+		return course;
+	}
+	public void setCourse(Course course) {
+		this.course = course;
+	}
+	
+	
+}
