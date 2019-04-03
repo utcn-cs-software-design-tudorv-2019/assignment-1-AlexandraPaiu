@@ -9,6 +9,10 @@ public class Course {
 	private int idteacher;
 	private int id;
 	
+	public Course() {
+		
+	}
+	
 	public int getTeacher() {
 		return idteacher;
 	}

@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -27,9 +28,24 @@ public class CourseRepository {
 		}
 	}
 	
-	public void show(Course course) 
+	public ArrayList<Course> show() throws SQLException 
 	{
+		String y = "SELECT * FROM course;";
+		 ResultSet rs = sts.executeQuery(y);
+		 ArrayList<Course> as = new ArrayList<Course>();
+		 
+		while (rs.next()) {
+			Course s = new Course();
+			s.setEndHour(rs.getString("endHour"));
+			s.setStartHour(rs.getString("startHour"));
+			s.setName(rs.getString("name"));
+			s.setLocation(rs.getInt("location"));
+			s.setIdTeacher(rs.getInt("Teacher_idTeacher"));
+			s.setId(rs.getInt("idCourse"));
+			as.add(s);
+		}
 		
+		return as;
 	}
 	
 	

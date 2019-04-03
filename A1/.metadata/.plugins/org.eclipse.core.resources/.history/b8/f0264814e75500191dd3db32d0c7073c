@@ -1,0 +1,12 @@
+package Business;
+
+public class EnrollmentBll {
+
+	public EnrollmentBll() {
+		
+	}
+	
+	public void addCourse(String curs) {
+		
+	}
+}

@@ -1,0 +1,26 @@
+package Business;
+
+import java.awt.HeadlessException;
+
+import DBA.Conexiune;
+import Data.EnrollmentRepository;
+
+public class EnrollmentBll {
+
+	public EnrollmentBll() {
+		
+	}
+	
+	public void addCourse(String curs, int student) {
+		Conexiune co = new Conexiune();
+		java.sql.Connection conex = co.getConex();
+		try {
+			EnrollmentRepository c = new EnrollmentRepository(conex);
+			c.insert(curs, student);
+			
+		} catch (HeadlessException e) {
+			
+			e.printStackTrace();
+		}
+	}
+}

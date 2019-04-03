@@ -1,8 +1,17 @@
 package Presentation;
 
+import java.sql.SQLException;
+import java.util.ArrayList;
+
+import Business.CourseBll;
+import Business.EnrollmentBll;
 import Business.StudentBll;
+import Data.Course;
+import Data.GradeCourse;
 import Data.Student;
 import javafx.application.Application;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.HPos;
@@ -10,8 +19,14 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.control.ScrollPane.ScrollBarPolicy;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
@@ -114,8 +129,72 @@ public class StudentView extends Application{
 	        GridPane.setMargin(LoginButton, new Insets(20, 0,20,0));
 
 	        LoginButton.setOnAction(new EventHandler<ActionEvent>() {
-	            @Override
+	            @SuppressWarnings({ "unchecked", "rawtypes" })
+				@Override
 	            public void handle(ActionEvent event) {
+	            	
+	            	ScrollPane scrollPane = new ScrollPane();
+	            	  TableView<Course> table = new TableView<Course>();
+	            	 table.setEditable(true);
+	            	  TableColumn nameCol = new TableColumn("Name");
+	            	  nameCol.setMinWidth(100);
+	            	  nameCol.setCellValueFactory(
+	                          new PropertyValueFactory<>("name"));
+	            	  
+	                  TableColumn emailCol = new TableColumn("Location");
+	                  emailCol.setMinWidth(100);
+	                  emailCol.setCellValueFactory(
+	                          new PropertyValueFactory<>("location"));
+	                  TableColumn addressCol = new TableColumn("StartHour");
+	                  addressCol.setMinWidth(100);
+	                  addressCol.setCellValueFactory(
+	                          new PropertyValueFactory<>("startHour"));
+	                  TableColumn cnpCol = new TableColumn("EndHour");
+	                  cnpCol.setMinWidth(100);
+	                  cnpCol.setCellValueFactory(
+	                          new PropertyValueFactory<>("endHour"));
+                 
+	                  Label namecourse = new Label("Course : ");      
+		      	        TextField namecourseFi = new TextField();
+		      	        namecourseFi.setPrefHeight(40);  
+	                  
+	                  Button editButton = new Button("Enroll");
+	                  editButton.setPrefHeight(40);
+	                  editButton.setDefaultButton(true);
+	                  editButton.setPrefWidth(200);
+	                  
+	                  editButton.setOnAction(new EventHandler<ActionEvent>() {
+	      	            public void handle(ActionEvent event) {
+	      	            	
+	      	            	String numeDorit = namecourseFi.getText();
+	      	            	EnrollmentBll eb = new EnrollmentBll();
+	      	            	eb.addCourse(numeDorit, s.getId());
+	      	            	System.out.println("apasat");
+	      	            	}
+	      	            });
+	                  
+	                  CourseBll sb = new CourseBll();
+	                  ArrayList<Course> as = sb.allCourse();
+	                  ObservableList<Course> data = FXCollections.observableArrayList(as);      
+	                  
+	                  table.setItems(data);
+	                  table.getColumns().addAll(nameCol, emailCol, addressCol,cnpCol);
+	                  
+	                  
+	                    	      
+	                  
+ 
+	                 GridPane sc = new GridPane();
+	                 sc.add(editButton,2,0); 
+	                 sc.add(namecourse, 3, 0);
+	                 sc.add(namecourseFi, 4, 0);
+	                 sc.add(table, 2,2);
+	                 scrollPane.setContent(sc);
+	                 scrollPane.setVbarPolicy(ScrollBarPolicy.ALWAYS);	             
+	                 scrollPane.setHbarPolicy(ScrollBarPolicy.AS_NEEDED);	          
+	                 Scene scene = new Scene(scrollPane, 650, 600);                 
+	                 stage.setScene(scene);
+	                 stage.show();
 	            	
 	            }
 	        });
@@ -133,7 +212,39 @@ public class StudentView extends Application{
 
 			@Override
 			public void handle(ActionEvent event) {
-				// TODO Auto-generated method stub
+				
+				EnrollmentBll eb = new EnrollmentBll();
+				ArrayList<GradeCourse> str = null;
+				try {
+					str = eb.show();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
+				  TableView<GradeCourse> table = new TableView<GradeCourse>();
+	            	 table.setEditable(true);
+	            	  TableColumn nameCol = new TableColumn("Grade");
+	            	  nameCol.setMinWidth(100);
+	            	  nameCol.setCellValueFactory(
+	                          new PropertyValueFactory<>("grade"));
+	            	  
+	                  TableColumn emailCol = new TableColumn("CourseName");
+	                  emailCol.setMinWidth(100);
+	                  emailCol.setCellValueFactory(
+	                          new PropertyValueFactory<>("course"));
+				
+	                  
+	                  ObservableList<GradeCourse> data = FXCollections.observableArrayList(str);      
+	                  
+	                  table.setItems(data);
+	                  table.getColumns().addAll(nameCol, emailCol);
+	                  
+				 GridPane sc = new GridPane();
+				 sc.add(table, 0, 0);
+				Scene scene = new Scene(sc, 650, 600);                 
+                stage.setScene(scene);
+                stage.show();
 				
 			}
                      

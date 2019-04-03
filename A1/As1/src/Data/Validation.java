@@ -41,8 +41,8 @@ public class Validation {
 		  String ePattern = "0-9+";
       java.util.regex.Pattern p = java.util.regex.Pattern.compile(ePattern);
       java.util.regex.Matcher mu = p.matcher(mail);
-      	if( mail.length() > 13 )
-      			return mu.matches() & true;
+      	if( mail.length() < 13 )
+      			return true;
       	return mu.matches() & false;
 	}
 }

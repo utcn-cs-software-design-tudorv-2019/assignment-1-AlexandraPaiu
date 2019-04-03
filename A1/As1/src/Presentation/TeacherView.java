@@ -20,6 +20,7 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.ScrollPane.ScrollBarPolicy;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
@@ -103,6 +104,7 @@ public class TeacherView extends Application{
 	        gridPane.add(cnpLabel, 0, 4);
 	        TextField cnpField = new TextField();
 	        cnpField.setPrefHeight(40);
+	        System.out.println(t.getCnp());
 	        cnpField.setText(t.getCnp());
 	        gridPane.add(cnpField, 1, 4);
 	        
@@ -124,11 +126,26 @@ public class TeacherView extends Application{
 	            	  TableView<Student> table = new TableView<Student>();
 	            	 table.setEditable(true);
 	            	  TableColumn nameCol = new TableColumn("Name");
+	            	  nameCol.setMinWidth(100);
+	            	  nameCol.setCellValueFactory(
+	                          new PropertyValueFactory<>("name"));
+	            	  
 	                  TableColumn emailCol = new TableColumn("Email");
+	                  emailCol.setMinWidth(100);
+	                  emailCol.setCellValueFactory(
+	                          new PropertyValueFactory<>("email"));
 	                  TableColumn addressCol = new TableColumn("Address");
+	                  addressCol.setMinWidth(100);
+	                  addressCol.setCellValueFactory(
+	                          new PropertyValueFactory<>("address"));
 	                  TableColumn cnpCol = new TableColumn("Cnp");
+	                  cnpCol.setMinWidth(100);
+	                  cnpCol.setCellValueFactory(
+	                          new PropertyValueFactory<>("cnp"));
 	                  TableColumn groupCol = new TableColumn("Group");
-	                  
+	                  groupCol.setMinWidth(100);
+	                  groupCol.setCellValueFactory(
+	                          new PropertyValueFactory<>("group"));
 	                 
 	                  
 	                  Button editButton = new Button("Edit");
@@ -148,39 +165,18 @@ public class TeacherView extends Application{
 	                  ArrayList<Student> as = sb.allStud();
 	                  ObservableList<Student> data = FXCollections.observableArrayList(as);       
 	                  
-	                  System.out.println(as.get(0).getName());
-	                  
 	                  table.setItems(data);
 	                  table.getColumns().addAll(nameCol, emailCol, addressCol,cnpCol,groupCol);
-	                  
-	                   ComboBox comboBox = new ComboBox();
-	                  ArrayList<String> str = new ArrayList<String>();
-	                  for(int i=0;i<as.size();i++) {
-	                	  str.add(as.get(i).getName());
-	                	  System.out.println(as.get(i).getName());
-	                	  
-	                  }
-	                  
-	                  ObservableList<String> options = FXCollections.observableArrayList(str );
-	                 comboBox.setItems(options);
-	                  
-	                  
-	                  
-	                 // Set content for ScrollPane
+             
 	                 GridPane sc = new GridPane();
 	                 sc.add(addButton, 0, 0);
 	                 sc.add(deleteButton, 1, 0);
 	                 sc.add(editButton,2,0); 
-	                 sc.add(comboBox,0,7);
+	                 sc.add(table,0,7);
 	                 scrollPane.setContent(sc);
-	                 // Always show vertical scroll bar
-	                 scrollPane.setVbarPolicy(ScrollBarPolicy.ALWAYS);
-	                 
-	                 // Horizontal scroll bar is only displayed when needed
-	                 scrollPane.setHbarPolicy(ScrollBarPolicy.AS_NEEDED);
-	          
-	                 Scene scene = new Scene(scrollPane, 650, 600);
-	                 
+	                 scrollPane.setVbarPolicy(ScrollBarPolicy.ALWAYS);	             
+	                 scrollPane.setHbarPolicy(ScrollBarPolicy.AS_NEEDED);	          
+	                 Scene scene = new Scene(scrollPane, 650, 600);                 
 	                 stage.setScene(scene);
 	                 stage.show();
 	            }
@@ -221,7 +217,11 @@ public class TeacherView extends Application{
 				String adresa = addressField.getText();
 				String cnp = cnpField.getText();
 				tb.updates(t,nume,adresa,cnp);
-				
+				t.setCnp(cnp);
+				nameField.setText(nume);
+				addressField.setText(adresa);
+				System.out.println(cnp);
+				cnpField.setText(cnp);
 			}               
         });
         

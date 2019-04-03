@@ -1,5 +1,43 @@
 package Business;
 
+import java.awt.HeadlessException;
+import java.sql.SQLException;
+import java.util.ArrayList;
+
+import DBA.Conexiune;
+import Data.EnrollmentRepository;
+import Data.GradeCourse;
+
 public class EnrollmentBll {
 
+	public EnrollmentBll() {
+		
+	}
+	
+	public ArrayList<GradeCourse> show() throws SQLException{
+		Conexiune co = new Conexiune();
+		java.sql.Connection conex = co.getConex();
+		try {
+			EnrollmentRepository c = new EnrollmentRepository(conex);
+			return c.show();
+			
+		} catch (HeadlessException e) {
+			
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	public void addCourse(String curs, int student) {
+		Conexiune co = new Conexiune();
+		java.sql.Connection conex = co.getConex();
+		try {
+			EnrollmentRepository c = new EnrollmentRepository(conex);
+			c.insert(curs, student);
+			
+		} catch (HeadlessException e) {
+			
+			e.printStackTrace();
+		}
+	}
 }

@@ -1,9 +1,0 @@
-package Data;
-
-public class Teacher extends User {
-
-	public Teacher(int id, String name, String address, String cnp) {
-		super(id, cnp, address, name);
-	}
-	
-}

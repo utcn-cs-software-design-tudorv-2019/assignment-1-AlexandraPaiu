@@ -38,7 +38,7 @@ public class StudentRepository {
 				 ResultSet rs = sts.executeQuery(y);
 				
 				if (rs.next()) {
-					s = new Student(rs.getString("name"),rs.getString("email"),rs.getString("password"),rs.getString("cnp"),rs.getString("address"), rs.getInt("groop"));
+					s = new Student(rs.getString("name"),rs.getString("email"),rs.getString("password"),rs.getString("address"),rs.getString("cnp"), rs.getInt("groop"));
 					s.setId(rs.getInt("idStudent"));
 				}
 			} catch (SQLException e) {
@@ -85,7 +85,7 @@ public class StudentRepository {
 			
 			 ArrayList<Student> as = new ArrayList<Student>();
 			 
-			if (rs.next()) {
+			while (rs.next()) {
 				Student s = new Student(rs.getString("name"),rs.getString("email"),rs.getString("password"),rs.getString("cnp"),rs.getString("address"), rs.getInt("groop"));
 				s.setId(rs.getInt("idStudent"));
 				as.add(s);
@@ -99,7 +99,7 @@ public class StudentRepository {
 		public void updates(Student old,String name,String address, String cnp, String group ) {
 			PreparedStatement findStatement = null;
 			try {
-				String y = "Update student SET address = ? , name = ?, cnp = ?, groop = ? where email = ?";
+				String y = "Update student SET address = ? , name = ?, cnp = ?, groop = ? where idStudent = ?";
 				findStatement = con.prepareStatement(y, Statement.RETURN_GENERATED_KEYS);
 				
 				int g = Integer.parseInt(group);
@@ -107,7 +107,7 @@ public class StudentRepository {
 				findStatement.setString(2,name);
 				findStatement.setString(3,cnp);
 				findStatement.setInt(4,g);
-				findStatement.setString(5,old.getEmail());
+				findStatement.setInt(5,old.getId());
 				findStatement.executeUpdate();
 				
 			} catch (SQLException e) {
