@@ -21,7 +21,6 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.ScrollPane.ScrollBarPolicy;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
@@ -52,8 +51,7 @@ public class TeacherView extends Application{
 	
 	Stage stage;
 	Scene scenefist;
-	private ArrayList<Student> as;
-	private int y;
+	
 	 @Override
 	 public void start(Stage primaryStage) throws Exception {
 		 	stage = primaryStage;
@@ -150,8 +148,6 @@ public class TeacherView extends Application{
 	                          new PropertyValueFactory<>("group"));
 	                 
 	                  
-	                  
-	                  
 	                  Button editButton = new Button("Edit");
 	                  editButton.setPrefHeight(40);
 	                  editButton.setDefaultButton(true);
@@ -160,64 +156,23 @@ public class TeacherView extends Application{
 	                  addButton.setPrefHeight(40);
 	                  addButton.setDefaultButton(true);
 	                  addButton.setPrefWidth(200);
-	                 
-	                  TextField ntx= new TextField();
-	                  ntx.setPromptText("name");
-	                  TextField mtx= new TextField();
-	                  mtx.setPromptText("mail");
-	                  TextField ptx= new TextField();
-	                  ptx.setPromptText("password");
-	                  TextField atx= new TextField();
-	                  atx.setPromptText("address");
-	                  TextField ctx= new TextField();
-	                  ctx.setPromptText("cnp");
-	                  TextField gtx= new TextField();
-	                  gtx.setPromptText("group");
-	                  
-	                  StudentBll sb = new StudentBll();
-	                  as = sb.allStud();
-	                  
-	                  addButton.setOnAction(new EventHandler<ActionEvent>() {
-	                      @Override
-	                      public void handle(ActionEvent e) {
-	                          StudentBll sba = new StudentBll(ntx.getText(),mtx.getText(),ptx.getText(),atx.getText(),ctx.getText(),gtx.getText());
-	                          sba.adauga();
-	                          as = sba.allStud();
-	                          y=1;
-	                      }
-	                  });
-	                  
-	                  
 	                  Button deleteButton = new Button("Delete");
 	                  deleteButton.setPrefHeight(40);
 	                  deleteButton.setDefaultButton(true);
 	                  deleteButton.setPrefWidth(200);
 	                  
-	                  deleteButton.setOnAction(new EventHandler<ActionEvent>() {
-	                      @Override
-	                      public void handle(ActionEvent e) {
-	                          StudentBll sba = new StudentBll();
-	                          sba.sterge(mtx.getText());
-	                      }
-	                  });
-	                  
+	                  StudentBll sb = new StudentBll();
+	                  ArrayList<Student> as = sb.allStud();
 	                  ObservableList<Student> data = FXCollections.observableArrayList(as);       
-	                 
 	                  
 	                  table.setItems(data);
 	                  table.getColumns().addAll(nameCol, emailCol, addressCol,cnpCol,groupCol);
              
 	                 GridPane sc = new GridPane();
 	                 sc.add(addButton, 0, 0);
-	                 sc.add(ntx, 0, 1);
-	                 sc.add(mtx, 0, 2);
-	                 sc.add(ptx, 0, 3);
-	                 sc.add(atx, 0, 4);
-	                 sc.add(ctx, 0, 5);
-	                 sc.add(gtx, 0, 6);
-	                 sc.add(deleteButton, 1, 0);
-	                 sc.add(editButton,2,0); 
-	                 sc.add(table,1,1);
+	                 sc.add(deleteButton, 1, 1);
+	                 sc.add(editButton,1,2); 
+	                 sc.add(table,2,0);
 	                 scrollPane.setContent(sc);
 	                 scrollPane.setVbarPolicy(ScrollBarPolicy.ALWAYS);	             
 	                 scrollPane.setHbarPolicy(ScrollBarPolicy.AS_NEEDED);	          

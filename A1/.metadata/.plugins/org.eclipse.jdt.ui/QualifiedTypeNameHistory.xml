@@ -3,7 +3,6 @@
 <fullyQualifiedTypeName name="java.awt.Label"/>
 <fullyQualifiedTypeName name="java.awt.TextField"/>
 <fullyQualifiedTypeName name="java.awt.Button"/>
-<fullyQualifiedTypeName name="java.util.ArrayList"/>
 <fullyQualifiedTypeName name="java.util.Hashtable"/>
 <fullyQualifiedTypeName name="java.sql.Connection"/>
 <fullyQualifiedTypeName name="java.beans.Statement"/>
@@ -14,4 +13,15 @@
 <fullyQualifiedTypeName name="java.sql.SQLException"/>
 <fullyQualifiedTypeName name="java.util.logging.Level"/>
 <fullyQualifiedTypeName name="DBA.Conexiune"/>
+<fullyQualifiedTypeName name="Business.CourseBll"/>
+<fullyQualifiedTypeName name="Data.Course"/>
+<fullyQualifiedTypeName name="Data.CourseRepository"/>
+<fullyQualifiedTypeName name="javafx.scene.control.cell.PropertyValueFactory"/>
+<fullyQualifiedTypeName name="Business.EnrollmentBll"/>
+<fullyQualifiedTypeName name="java.util.Random"/>
+<fullyQualifiedTypeName name="java.util.ArrayList"/>
+<fullyQualifiedTypeName name="Data.GradeCourse"/>
+<fullyQualifiedTypeName name="javafx.scene.control.cell.TextFieldTableCell"/>
+<fullyQualifiedTypeName name="javafx.scene.control.TableColumn.CellEditEvent"/>
+<fullyQualifiedTypeName name="Business.StudentBll"/>
 </qualifiedTypeNameHistroy>

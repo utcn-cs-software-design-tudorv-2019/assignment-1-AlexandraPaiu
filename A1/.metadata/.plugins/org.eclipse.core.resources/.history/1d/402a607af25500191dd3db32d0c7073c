@@ -52,8 +52,7 @@ public class TeacherView extends Application{
 	
 	Stage stage;
 	Scene scenefist;
-	private ArrayList<Student> as;
-	private int y;
+	
 	 @Override
 	 public void start(Stage primaryStage) throws Exception {
 		 	stage = primaryStage;
@@ -174,16 +173,14 @@ public class TeacherView extends Application{
 	                  TextField gtx= new TextField();
 	                  gtx.setPromptText("group");
 	                  
-	                  StudentBll sb = new StudentBll();
-	                  as = sb.allStud();
+	                  
 	                  
 	                  addButton.setOnAction(new EventHandler<ActionEvent>() {
 	                      @Override
 	                      public void handle(ActionEvent e) {
 	                          StudentBll sba = new StudentBll(ntx.getText(),mtx.getText(),ptx.getText(),atx.getText(),ctx.getText(),gtx.getText());
 	                          sba.adauga();
-	                          as = sba.allStud();
-	                          y=1;
+	                          
 	                      }
 	                  });
 	                  
@@ -193,16 +190,9 @@ public class TeacherView extends Application{
 	                  deleteButton.setDefaultButton(true);
 	                  deleteButton.setPrefWidth(200);
 	                  
-	                  deleteButton.setOnAction(new EventHandler<ActionEvent>() {
-	                      @Override
-	                      public void handle(ActionEvent e) {
-	                          StudentBll sba = new StudentBll();
-	                          sba.sterge(mtx.getText());
-	                      }
-	                  });
-	                  
+	                  StudentBll sb = new StudentBll();
+	                  ArrayList<Student> as = sb.allStud();
 	                  ObservableList<Student> data = FXCollections.observableArrayList(as);       
-	                 
 	                  
 	                  table.setItems(data);
 	                  table.getColumns().addAll(nameCol, emailCol, addressCol,cnpCol,groupCol);

@@ -80,21 +80,6 @@ public class StudentBll {
 		}
 	}
 	
-	public void sterge(String t) {
-
-		Conexiune co = new Conexiune();
-		java.sql.Connection conex = co.getConex();
-		try {
-			StudentRepository c = new StudentRepository(conex);
-			
-			c.delete(t);
-			this.showAt(scena, "Stergere cu succes StudentBll");
-		} catch (HeadlessException e) {
-			this.showAt(scena, "Eroare la introducere");
-			e.printStackTrace();
-		}
-	}
-	
 	public void adauga(){
 		Conexiune co = new Conexiune();
 		java.sql.Connection conex = co.getConex();

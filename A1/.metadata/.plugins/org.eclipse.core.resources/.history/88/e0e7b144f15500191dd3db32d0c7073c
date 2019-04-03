@@ -52,8 +52,7 @@ public class TeacherView extends Application{
 	
 	Stage stage;
 	Scene scenefist;
-	private ArrayList<Student> as;
-	private int y;
+	
 	 @Override
 	 public void start(Stage primaryStage) throws Exception {
 		 	stage = primaryStage;
@@ -160,49 +159,30 @@ public class TeacherView extends Application{
 	                  addButton.setPrefHeight(40);
 	                  addButton.setDefaultButton(true);
 	                  addButton.setPrefWidth(200);
-	                 
+	                  
 	                  TextField ntx= new TextField();
 	                  ntx.setPromptText("name");
-	                  TextField mtx= new TextField();
-	                  mtx.setPromptText("mail");
-	                  TextField ptx= new TextField();
-	                  ptx.setPromptText("password");
-	                  TextField atx= new TextField();
-	                  atx.setPromptText("address");
-	                  TextField ctx= new TextField();
-	                  ctx.setPromptText("cnp");
-	                  TextField gtx= new TextField();
-	                  gtx.setPromptText("group");
-	                  
-	                  StudentBll sb = new StudentBll();
-	                  as = sb.allStud();
+	                  TextField mtx= new TextField("mail");
+	                  TextField ptx= new TextField("password");
+	                  TextField atx= new TextField("address");
+	                  TextField ctx= new TextField("cnp");
+	                  TextField gtx= new TextField("group");
 	                  
 	                  addButton.setOnAction(new EventHandler<ActionEvent>() {
 	                      @Override
 	                      public void handle(ActionEvent e) {
-	                          StudentBll sba = new StudentBll(ntx.getText(),mtx.getText(),ptx.getText(),atx.getText(),ctx.getText(),gtx.getText());
-	                          sba.adauga();
-	                          as = sba.allStud();
-	                          y=1;
+	                          
 	                      }
 	                  });
-	                  
 	                  
 	                  Button deleteButton = new Button("Delete");
 	                  deleteButton.setPrefHeight(40);
 	                  deleteButton.setDefaultButton(true);
 	                  deleteButton.setPrefWidth(200);
 	                  
-	                  deleteButton.setOnAction(new EventHandler<ActionEvent>() {
-	                      @Override
-	                      public void handle(ActionEvent e) {
-	                          StudentBll sba = new StudentBll();
-	                          sba.sterge(mtx.getText());
-	                      }
-	                  });
-	                  
+	                  StudentBll sb = new StudentBll();
+	                  ArrayList<Student> as = sb.allStud();
 	                  ObservableList<Student> data = FXCollections.observableArrayList(as);       
-	                 
 	                  
 	                  table.setItems(data);
 	                  table.getColumns().addAll(nameCol, emailCol, addressCol,cnpCol,groupCol);
