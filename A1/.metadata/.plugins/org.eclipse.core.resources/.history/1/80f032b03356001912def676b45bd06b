@@ -1,14 +1,11 @@
 package Presentation;
 
-import java.sql.SQLException;
 import java.util.ArrayList;
 
-import Business.CourseBll;
-import Business.EnrollmentBll;
 import Business.StudentBll;
-import Data.Course;
-import Data.GradeCourse;
+import Business.TeacherBll;
 import Data.Student;
+import Data.Teacher;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -22,45 +19,45 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.control.ScrollPane.ScrollBarPolicy;
+import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
-import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.control.ScrollPane.ScrollBarPolicy;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.Priority;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 
-public class StudentView extends Application{
+public class TeacherView extends Application{
 
-	
 	String identification;
-	Student s;
-	StudentBll sb = new StudentBll();
+	Teacher t;
+	TeacherBll tb = new TeacherBll();
 	
-	public StudentView(String email, String password) {
-		this.identification=email;
+	public TeacherView(String email, String pass) {
+		this.identification=email;	
 		
-		s = sb.findByMail(identification);
-		if (!s.getPassword().equals(password)) {
-			s = null;
+		t = tb.findByMail(identification);
+		if (!t.getPassword().equals(pass)) {
+			t = null;
 			System.out.println("Incorect");
 			return;
-			}
+		}
 	}
-
-
+	
 	Stage stage;
 	Scene scenefist;
-	
+	private ArrayList<Student> as;
+	private int y;
 	 @Override
 	 public void start(Stage primaryStage) throws Exception {
 		 	stage = primaryStage;
-	        primaryStage.setTitle("Student Info");
-
+	        primaryStage.setTitle("Teacher Info");
 	        GridPane gridPane = createRegistrationFormPane();
 	        addUIControls(gridPane);
 	        Scene scene = new Scene(gridPane, 800, 500);	
@@ -85,7 +82,7 @@ public class StudentView extends Application{
 	 
 	 private void addUIControls(GridPane gridPane) {
 	        // Add Header
-	        Label headerLabel = new Label("Student");
+	        Label headerLabel = new Label("Teacher");
 	        headerLabel.setFont(Font.font("Arial", FontWeight.BOLD, 24));
 	        gridPane.add(headerLabel, 0,0,2,1);
 	        GridPane.setHalignment(headerLabel, HPos.CENTER);
@@ -95,32 +92,26 @@ public class StudentView extends Application{
 	        gridPane.add(nameLabel, 0, 2);
 	        TextField nameField = new TextField();
 	        nameField.setPrefHeight(40);
-	        nameField.setText(s.getName());
+	        nameField.setText(t.getName());
 	        gridPane.add(nameField, 1, 2);
 
 	        Label addressLabel = new Label("Address: ");
 	        gridPane.add(addressLabel, 0, 3);
 	        TextField addressField = new TextField();
 	        addressField.setPrefHeight(40);
-	        addressField.setText(s.getAddress());
+	        addressField.setText(t.getAddress());
 	        gridPane.add(addressField, 1, 3);
 
 	        Label cnpLabel = new Label("CNP: ");
 	        gridPane.add(cnpLabel, 0, 4);
 	        TextField cnpField = new TextField();
 	        cnpField.setPrefHeight(40);
-	        cnpField.setText(s.getCnp());
+	        System.out.println(t.getCnp());
+	        cnpField.setText(t.getCnp());
 	        gridPane.add(cnpField, 1, 4);
 	        
-	        Label groupLabel = new Label("Group: ");
-	        gridPane.add(groupLabel, 0, 5);
-	        TextField groupField = new TextField();
-	        groupField.setPrefHeight(40);
-	        groupField.setText( "" +s.getGroup() );
-	        gridPane.add(groupField, 1, 5);
-	        
 
-	        Button LoginButton = new Button("See Courses");
+	        Button LoginButton = new Button("See Students");
 	        LoginButton.setPrefHeight(40);
 	        LoginButton.setDefaultButton(true);
 	        LoginButton.setPrefWidth(200);
@@ -129,78 +120,123 @@ public class StudentView extends Application{
 	        GridPane.setMargin(LoginButton, new Insets(20, 0,20,0));
 
 	        LoginButton.setOnAction(new EventHandler<ActionEvent>() {
-	            @SuppressWarnings({ "unchecked", "rawtypes" })
+	            @SuppressWarnings("unchecked")
 				@Override
 	            public void handle(ActionEvent event) {
-	            	
-	            	ScrollPane scrollPane = new ScrollPane();
-	            	  TableView<Course> table = new TableView<Course>();
+
+	            	 ScrollPane scrollPane = new ScrollPane();
+	            	  TableView<Student> table = new TableView<Student>();
 	            	 table.setEditable(true);
 	            	  TableColumn nameCol = new TableColumn("Name");
 	            	  nameCol.setMinWidth(100);
 	            	  nameCol.setCellValueFactory(
 	                          new PropertyValueFactory<>("name"));
 	            	  
-	                  TableColumn emailCol = new TableColumn("Location");
+	                  TableColumn emailCol = new TableColumn("Email");
 	                  emailCol.setMinWidth(100);
 	                  emailCol.setCellValueFactory(
-	                          new PropertyValueFactory<>("location"));
-	                  TableColumn addressCol = new TableColumn("StartHour");
+	                          new PropertyValueFactory<>("email"));
+	                  TableColumn addressCol = new TableColumn("Address");
 	                  addressCol.setMinWidth(100);
 	                  addressCol.setCellValueFactory(
-	                          new PropertyValueFactory<>("startHour"));
-	                  TableColumn cnpCol = new TableColumn("EndHour");
+	                          new PropertyValueFactory<>("address"));
+	                  TableColumn cnpCol = new TableColumn("Cnp");
 	                  cnpCol.setMinWidth(100);
 	                  cnpCol.setCellValueFactory(
-	                          new PropertyValueFactory<>("endHour"));
-                 
-	                  Label namecourse = new Label("Course : ");      
-		      	        TextField namecourseFi = new TextField();
-		      	        namecourseFi.setPrefHeight(40);  
+	                          new PropertyValueFactory<>("cnp"));
+	                  TableColumn groupCol = new TableColumn("Group");
+	                  groupCol.setMinWidth(100);
+	                  groupCol.setCellValueFactory(
+	                          new PropertyValueFactory<>("group"));
+	                 
 	                  
-	                  Button editButton = new Button("Enroll");
+	                  
+	                  
+	                  Button editButton = new Button("Edit");
 	                  editButton.setPrefHeight(40);
 	                  editButton.setDefaultButton(true);
 	                  editButton.setPrefWidth(200);
+	                  Button addButton = new Button("Add");
+	                  addButton.setPrefHeight(40);
+	                  addButton.setDefaultButton(true);
+	                  addButton.setPrefWidth(200);
+	                 
+	                  TextField ntx= new TextField();
+	                  ntx.setPromptText("name");
+	                  TextField mtx= new TextField();
+	                  mtx.setPromptText("mail");
+	                  TextField ptx= new TextField();
+	                  ptx.setPromptText("password");
+	                  TextField atx= new TextField();
+	                  atx.setPromptText("address");
+	                  TextField ctx= new TextField();
+	                  ctx.setPromptText("cnp");
+	                  TextField gtx= new TextField();
+	                  gtx.setPromptText("group");
 	                  
-	                  editButton.setOnAction(new EventHandler<ActionEvent>() {
-	      	            public void handle(ActionEvent event) {
-	      	            	
-	      	            	String numeDorit = namecourseFi.getText();
-	      	            	EnrollmentBll eb = new EnrollmentBll();
-	      	            	eb.addCourse(numeDorit, s.getId());
-	      	            	System.out.println("apasat");
-	      	            	}
-	      	            });
+	                  StudentBll sb = new StudentBll();
+	                  as = sb.allStud();
 	                  
-	                  CourseBll sb = new CourseBll();
-	                  ArrayList<Course> as = sb.allCourse();
-	                  ObservableList<Course> data = FXCollections.observableArrayList(as);      
+	                  ObservableList<Student> data = FXCollections.observableArrayList(as);       
+	                 
 	                  
 	                  table.setItems(data);
-	                  table.getColumns().addAll(nameCol, emailCol, addressCol,cnpCol);
+	                  table.getColumns().addAll(nameCol, emailCol, addressCol,cnpCol,groupCol);
+	                  
+	                  addButton.setOnAction(new EventHandler<ActionEvent>() {
+	                      @Override
+	                      public void handle(ActionEvent e) {
+	                          StudentBll sba = new StudentBll(ntx.getText(),mtx.getText(),ptx.getText(),atx.getText(),ctx.getText(),gtx.getText());
+	                          sba.adauga();
+	                          as = sba.allStud();
+	                          y=1;
+	                          ObservableList<Student> data = FXCollections.observableArrayList(as);     
+	                          table.setItems(data);
+	    	                  //table.getColumns().addAll(nameCol, emailCol, addressCol,cnpCol,groupCol);
+	                      }
+	                  });
 	                  
 	                  
-	                    	      
+	                  Button deleteButton = new Button("Delete");
+	                  deleteButton.setPrefHeight(40);
+	                  deleteButton.setDefaultButton(true);
+	                  deleteButton.setPrefWidth(200);
 	                  
- 
+	                  deleteButton.setOnAction(new EventHandler<ActionEvent>() {
+	                      @Override
+	                      public void handle(ActionEvent e) {
+	                          StudentBll sba = new StudentBll();
+	                          sba.sterge(mtx.getText());
+	                          ObservableList<Student> data = FXCollections.observableArrayList(as);     
+	                          table.setItems(data);
+	    	                  //table.getColumns().addAll(nameCol, emailCol, addressCol,cnpCol,groupCol);
+	                      }
+	                  });
+	                  
+	                 
+             
 	                 GridPane sc = new GridPane();
+	                 sc.add(addButton, 0, 0);
+	                 sc.add(ntx, 0, 1);
+	                 sc.add(mtx, 0, 2);
+	                 sc.add(ptx, 0, 3);
+	                 sc.add(atx, 0, 4);
+	                 sc.add(ctx, 0, 5);
+	                 sc.add(gtx, 0, 6);
+	                 sc.add(deleteButton, 1, 0);
 	                 sc.add(editButton,2,0); 
-	                 sc.add(namecourse, 3, 0);
-	                 sc.add(namecourseFi, 4, 0);
-	                 sc.add(table, 2,2);
+	                 sc.add(table,1,1);
 	                 scrollPane.setContent(sc);
 	                 scrollPane.setVbarPolicy(ScrollBarPolicy.ALWAYS);	             
 	                 scrollPane.setHbarPolicy(ScrollBarPolicy.AS_NEEDED);	          
 	                 Scene scene = new Scene(scrollPane, 650, 600);                 
 	                 stage.setScene(scene);
 	                 stage.show();
-	            	
 	            }
 	        });
 	    
 
-        Button SigninButton = new Button("See my Grades");
+        Button SigninButton = new Button("Generate Report");
         SigninButton.setPrefHeight(40);
         SigninButton.setDefaultButton(true);
         SigninButton.setPrefWidth(200);
@@ -212,39 +248,7 @@ public class StudentView extends Application{
 
 			@Override
 			public void handle(ActionEvent event) {
-				
-				EnrollmentBll eb = new EnrollmentBll();
-				ArrayList<GradeCourse> str = null;
-				try {
-					str = eb.show();
-				} catch (SQLException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				
-				  TableView<GradeCourse> table = new TableView<GradeCourse>();
-	            	 table.setEditable(true);
-	            	  TableColumn nameCol = new TableColumn("Grade");
-	            	  nameCol.setMinWidth(100);
-	            	  nameCol.setCellValueFactory(
-	                          new PropertyValueFactory<>("grade"));
-	            	  
-	                  TableColumn emailCol = new TableColumn("CourseName");
-	                  emailCol.setMinWidth(100);
-	                  emailCol.setCellValueFactory(
-	                          new PropertyValueFactory<>("course"));
-				
-	                  
-	                  ObservableList<GradeCourse> data = FXCollections.observableArrayList(str);      
-	                  
-	                  table.setItems(data);
-	                  table.getColumns().addAll(nameCol, emailCol);
-	                  
-				 GridPane sc = new GridPane();
-				 sc.add(table, 0, 0);
-				Scene scene = new Scene(sc, 650, 600);                 
-                stage.setScene(scene);
-                stage.show();
+				// TODO Auto-generated method stub
 				
 			}
                      
@@ -262,19 +266,15 @@ public class StudentView extends Application{
 
 			@Override
 			public void handle(ActionEvent event) {
-				
 				String nume = nameField.getText();
 				String adresa = addressField.getText();
 				String cnp = cnpField.getText();
-				String group = groupField.getText();
-
-				sb.updates(s,nume,adresa,cnp, group);
-				s = sb.findByMail(identification);
-				nameField.setText(s.getName());
-				addressField.setText(s.getAddress());
-				cnpField.setText(s.getCnp());
-				groupField.setText(s.getGroup()+"");
-				
+				tb.updates(t,nume,adresa,cnp);
+				t.setCnp(cnp);
+				nameField.setText(nume);
+				addressField.setText(adresa);
+				System.out.println(cnp);
+				cnpField.setText(cnp);
 			}               
         });
         
@@ -290,9 +290,10 @@ public class StudentView extends Application{
 
 			@Override
 			public void handle(ActionEvent event) {
-				sb.sterge(s);
+				tb.sterge(t);
 				
 			}               
         });
     }
+	
 }

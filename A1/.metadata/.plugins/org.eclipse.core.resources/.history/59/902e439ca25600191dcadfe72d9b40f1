@@ -269,7 +269,6 @@ public class StudentView extends Application{
 				String group = groupField.getText();
 
 				sb.updates(s,nume,adresa,cnp, group);
-				s = sb.findByMail(identification);
 				nameField.setText(s.getName());
 				addressField.setText(s.getAddress());
 				cnpField.setText(s.getCnp());

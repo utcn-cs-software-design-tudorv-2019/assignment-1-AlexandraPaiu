@@ -177,6 +177,12 @@ public class TeacherView extends Application{
 	                  StudentBll sb = new StudentBll();
 	                  as = sb.allStud();
 	                  
+	                  ObservableList<Student> data = FXCollections.observableArrayList(as);       
+	                 
+	                  
+	                  table.setItems(data);
+	                  table.getColumns().addAll(nameCol, emailCol, addressCol,cnpCol,groupCol);
+	                  
 	                  addButton.setOnAction(new EventHandler<ActionEvent>() {
 	                      @Override
 	                      public void handle(ActionEvent e) {
@@ -184,6 +190,9 @@ public class TeacherView extends Application{
 	                          sba.adauga();
 	                          as = sba.allStud();
 	                          y=1;
+	                          ObservableList<Student> data = FXCollections.observableArrayList(as);     
+	                          table.setItems(data);
+	    	                  table.getColumns().addAll(nameCol, emailCol, addressCol,cnpCol,groupCol);
 	                      }
 	                  });
 	                  
@@ -198,14 +207,13 @@ public class TeacherView extends Application{
 	                      public void handle(ActionEvent e) {
 	                          StudentBll sba = new StudentBll();
 	                          sba.sterge(mtx.getText());
+	                          ObservableList<Student> data = FXCollections.observableArrayList(as);     
+	                          table.setItems(data);
+	    	                  table.getColumns().addAll(nameCol, emailCol, addressCol,cnpCol,groupCol);
 	                      }
 	                  });
 	                  
-	                  ObservableList<Student> data = FXCollections.observableArrayList(as);       
 	                 
-	                  
-	                  table.setItems(data);
-	                  table.getColumns().addAll(nameCol, emailCol, addressCol,cnpCol,groupCol);
              
 	                 GridPane sc = new GridPane();
 	                 sc.add(addButton, 0, 0);
@@ -262,11 +270,10 @@ public class TeacherView extends Application{
 				String adresa = addressField.getText();
 				String cnp = cnpField.getText();
 				tb.updates(t,nume,adresa,cnp);
-				t.setCnp(cnp);
-				nameField.setText(nume);
-				addressField.setText(adresa);
-				System.out.println(cnp);
-				cnpField.setText(cnp);
+				t = tb.findByMail(identification);
+				nameField.setText(t.getName());
+				addressField.setText(t.getAddress());
+				cnpField.setText(t.getCnp());
 			}               
         });
         
